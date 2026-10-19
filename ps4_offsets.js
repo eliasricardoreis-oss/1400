@@ -117,23 +117,30 @@ export const PS4 = {
     wk_expm1_builtin: 0x2586880,
     wk_JSFunction_m_function: 0x28,
 
-    // Gadgets ROP do WebKit (Validados para 14.00)
-    wk_RET:               0x004032,
-    wk_LEAVE_RET:         0x01c2f7,
-    wk_POP_RAX_RET:       0x014504,
-    wk_POP_RBX_RET:       0x00b9e8,
-    wk_POP_RCX_RET:       0x01fade,
-    wk_POP_RDI_RET:       0x060480,
-    wk_POP_RDX_RET:       0x1305ba,
-    wk_POP_RSI_RET:       0x07245e,
-    wk_POP_RBP_RET:       0x0040b6,
-    wk_POP_RSP_RET:       0x073017,
-    wk_POP_R8_RET:        0x230cbe1,
-    wk_POP_R9_RET:        0x9df883,
-    wk_POP_R12_RET:       0x242ab15,
-    wk_POP_R13_R14_R15_RET: 0x06047b,
-    wk_POP_R14_RET:       0x0a9e91,
-    wk_POP_R15_RET:       0x06047f,
+    wk_RET          : 0x4032,       // c3
+    wk_LEAVE_RET    : 0x1c2f7,      // c9 c3
+    wk_POP_RAX_RET  : 0x14504,      // 58 c3
+    wk_POP_RBX_RET  : 0xb9e8,       // 5b c3
+    wk_POP_RCX_RET  : 0x1fade,      // 59 c3
+    wk_POP_RDI_RET  : 0x60480,      // 5f c3
+    wk_POP_RDX_RET  : 0x1305ba,     // 5a c3
+    wk_POP_RSI_RET  : 0x7245e,      // 5e c3
+    wk_POP_RBP_RET  : 0x40b6,       // 5d c3
+    wk_POP_RSP_RET  : 0x73017,      // 5c c3 (stack pivot!)
+
+    // ── Extended registers (verified) ──
+    wk_POP_R8_RET   : 0x230cbe1,    // 41 58 c3
+    wk_POP_R9_RET   : 0x9df883,     // 41 59 c3 (pop r9; ret)
+    wk_POP_R12_RET  : 0x242ab15,    // 41 5c c3
+
+    // ── Extended registers (partial — verify before use) ──
+    wk_POP_R10_RET  : 0x2dc33b5,    // 41 5a 41 ... (not followed by clean ret)
+    wk_POP_R11_RET  : 0x19c9ba,     // 41 5b 41 ... (not followed by clean ret)
+
+    // ── Multi-pop gadgets ──
+    wk_POP_R13_RET  : 0x6047b,      // 41 5d 41 5e 41 5f c3 (pops r13, r14, r15)
+    wk_POP_R14_RET  : 0xa9e91,      // 41 5e c3
+    wk_POP_R15_RET  : 0x6047f,      // 41 5f c3
 
     // Gadgets avançados / Chamadas
     wk_MOV_RDI_RSI_30_CALL: 0x295f948,
