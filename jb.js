@@ -405,7 +405,8 @@ let allDone = false,
         aligned(webkitBase) && aligned(libkernelBase),
         "",
       )
-    );
+    )
+      return;
 
     const G = {};
     const GAD = [
