@@ -652,7 +652,6 @@ export function offsetsFor(uaString) {
   return { key, off: PS4[key] || null };
 }
 
-// Configuração oficial completa para o firmware 14.00 com offsets de kernel mapeados
 PS4["14.00"] = {
   fw_status: "state=14.00-full-kernel-offsets-integrated",
 
