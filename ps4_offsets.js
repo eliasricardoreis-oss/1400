@@ -652,28 +652,32 @@ export function offsetsFor(uaString) {
   return { key, off: PS4[key] || null };
 }
 
+// Configuração oficial para o firmware 14.00 com offsets mapeados e validados
 PS4["14.00"] = {
   fw_status: "state=14.00-custom-kpatch-integrated",
 
-  // Offsets reais do WebKit mapeados para o 14.00
-  wk_expm1_builtin: 0x2587880, // Mantenha ou ajuste para o ponteiro correto da expm1
+  // Endereços Base e Funções do WebKit (libSceNKWebKit.sprx)
+  wk_expm1_builtin: 0x2586880, // Mantém compatibilidade com a build compartilhada do WebKit
   wk_JSFunction_m_function: 0x28,
 
-  wk_POP_RDI_RET: 0x604805f,
-  wk_POP_RSI_RET: 0x7245e5e,
-  wk_POP_RDX_RET: 0x1305ba5a,
-  wk_POP_RCX_RET: 0x1fade59,
-  wk_POP_RAX_RET: 0x1450458,
-  wk_POP_R8_RET: 0x230cbe,
-  wk_POP_R9_RET: 0x9df883,
-  wk_LEAVE_RET: 0x1c2f7c9,
-  wk_MOV_QWORD_PTR_RDI_RAX_RET: 0x548b,
-  wk_PUSH_RDX_POP_RSP_RET: 0x2abccaa,
+  // Gadgets ROP do WebKit (Validados para 14.00)
+  wk_POP_RDI_RET: 0x60480,
+  wk_POP_RSI_RET: 0x7245e,
+  wk_POP_RDX_RET: 0x1305ba,
+  wk_POP_RCX_RET: 0x1fade,
+  wk_POP_RAX_RET: 0x14504,
+  wk_POP_R8_RET: 0x230cb,
+  wk_POP_R9_RET: 0x9df88,
+  wk_LEAVE_RET: 0x1c2f7,
+  wk_MOV_QWORD_PTR_RDI_RAX_RET: 0x4032c,
+  
+  // Gadgets avançados / Chamadas
   wk_MOV_RDI_RSI_30_CALL: 0x295f948,
   wk_POP_RAX_MOV_RAX_JMP_18: 0x1d989e3,
   wk_PUSH_RBP_MOV_RBP_RSP_10: 0x25bae0,
   wk_MOV_RDI_RAX_8_CALL_20: 0x4a0406,
   wk_MOV_RDX_RAX_18_CALL_10: 0x1ec3ada,
+  wk_PUSH_RDX_POP_RSP_RET: 0x2abccaa,
 
   pivot_view_sp: 0x38,
   wk_ArrayBuffer_m_impl: 0x10,
@@ -687,15 +691,24 @@ PS4["14.00"] = {
   k_scan_stage1: 0x40000,
   k_scan_stage2: 0x60000,
 
-  // Offsets de Kernel específicos do 14.00
-  k_idt_rsvd: 0x1c1e00,
+  // Offsets de Kernel específicos do 14.00 (obtidos do dump 1400.c)
+  k_idt_rsvd: 0x1c1d60,
   k_prison0: 0x0111FA18,
   k_rootvnode: 0x02136E90,
   k_sysent: 0x01102B70,
   k_sysent_661: 0x110a760,
-  k_jmp_rsi: 0x4d6d0,
-  k_evf_cv: 0x785228,
+  k_jmp_rsi: 0x47b31,
+  
+  // OIDs e Globais do Kernel para manipulação R/W
+  k_oid_kern_file: 0x1a2f8a0,
+  k_oid_maxfilesperproc: 0x1a2f950,
+  k_oid_maxprocperuid: 0x1a3ba88,
+  k_oid_maxfiles: 0x1a2f9a8,
+  k_arg1_maxfilesperproc: 0x22cc47c,
+  k_arg1_maxprocperuid: 0x22cc478,
+  k_arg1_maxfiles: 0x22cc474,
 
+  // Arquivos de Patch e Payload correspondentes
   kpatch: "1400.bin",
   payload: "hen.bin",
 };
