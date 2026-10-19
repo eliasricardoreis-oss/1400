@@ -779,8 +779,8 @@ let allDone = false,
       MAP_FIXED = 0x10,
       MAP_ANON = 0x1000;
     const NODE_SZ = 0x38;
-    const N_LEAK = 131072;
-    const SPRAY =  256;
+    const N_LEAK = 65536; // Reduzido pela metade
+    const SPRAY =  64;  // Reduzido de 256 para 64
     const SPIN = params.get("spin")
       ? parseInt(params.get("spin"), 10)
       : 40000000;
@@ -990,7 +990,7 @@ let allDone = false,
     const LX = lkAd.add32(0x00),
       LC = lkAd.add32(0x10);
 
-    const NBLOCK = 8;
+    const NBLOCK = 4;
     const bspAb = new ArrayBuffer(8);
     keepAlive.push(bspAb);
     const bspDv = new DataView(bspAb);
@@ -2034,7 +2034,7 @@ let allDone = false,
 
     const RVA_RSVD = off.k_idt_rsvd;
     const STEPMAG = 0x1000000;
-    const SWEEP = params.get("sweep") ? parseInt(params.get("sweep"), 10) : 256;
+    const SWEEP = params.get("sweep") ? parseInt(params.get("sweep"), 10) : 128;
 
     const B = {};
     const JOBS = [
