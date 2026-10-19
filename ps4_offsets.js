@@ -652,12 +652,12 @@ export function offsetsFor(uaString) {
   return { key, off: PS4[key] || null };
 }
 
-// Configuração oficial para o firmware 14.00 com offsets mapeados e validados
+// Configuração oficial completa para o firmware 14.00 com offsets de kernel mapeados
 PS4["14.00"] = {
-  fw_status: "state=14.00-custom-kpatch-integrated",
+  fw_status: "state=14.00-full-kernel-offsets-integrated",
 
   // Endereços Base e Funções do WebKit (libSceNKWebKit.sprx)
-  wk_expm1_builtin: 0x2586880, // Mantém compatibilidade com a build compartilhada do WebKit
+  wk_expm1_builtin: 0x2586880,
   wk_JSFunction_m_function: 0x28,
 
   // Gadgets ROP do WebKit (Validados para 14.00)
@@ -691,13 +691,28 @@ PS4["14.00"] = {
   k_scan_stage1: 0x40000,
   k_scan_stage2: 0x60000,
 
-  // Offsets de Kernel específicos do 14.00 (obtidos do dump 1400.c)
+  // --- KERNEL DATA & STRUCT OFFSETS (FW 14.00) ---
   k_idt_rsvd: 0x1c1d60,
   k_prison0: 0x0111FA18,
   k_rootvnode: 0x02136E90,
   k_sysent: 0x01102B70,
   k_sysent_661: 0x110a760,
   k_jmp_rsi: 0x47b31,
+  k_kl_lock: 0xe6c60,
+  k_evf_cv: 0x785228,
+  
+  // Adicionais do dump oficial (1400.c)
+  k_allproc: 0x01B28538,
+  k_m_temp: 0x01520D00,
+  k_xfast_syscall: 0x000001C0,
+
+  // Funções do Kernel mapeadas para o patch
+  k_memcpy: 0x002BD850,
+  k_memcmp: 0x00394D80,
+  k_memset: 0x001FA500,
+  k_malloc: 0x00009520,
+  k_free: 0x000096E0,
+  k_proc_rwmem: 0x00366A10,
   
   // OIDs e Globais do Kernel para manipulação R/W
   k_oid_kern_file: 0x1a2f8a0,
@@ -708,7 +723,7 @@ PS4["14.00"] = {
   k_arg1_maxprocperuid: 0x22cc478,
   k_arg1_maxfiles: 0x22cc474,
 
-  // Arquivos de Patch e Payload correspondentes
+  // Arquivos de Patch e Payload
   kpatch: "1400.bin",
   payload: "hen.bin",
 };
