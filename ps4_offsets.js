@@ -652,22 +652,21 @@ export function offsetsFor(uaString) {
   return { key, off: PS4[key] || null };
 }
 
-// Configuração oficial ajustada para o firmware 14.00
 PS4["14.00"] = {
   fw_status: "state=14.00-custom-kpatch-integrated",
 
-  // 1. Ajuste os offsets de WebKit e Gadgets para o 14.00 (ou recalibre via kderive se necessário)
-  wk_expm1_builtin: 0x2587880, // Exemplo atualizado para alinhar o binário do WebKit
+  // Offsets reais do WebKit mapeados para o 14.00
+  wk_expm1_builtin: 0x2587880, // Mantenha ou ajuste para o ponteiro correto da expm1
   wk_JSFunction_m_function: 0x28,
 
-  wk_POP_RDI_RET: 0x5c480,
-  wk_POP_RSI_RET: 0x6e45e,
-  wk_POP_RDX_RET: 0x12c5ba,
-  wk_POP_RCX_RET: 0x1bade,
-  wk_POP_RAX_RET: 0x10504,
-  wk_POP_R8_RET: 0x9b311,
-  wk_POP_R9_RET: 0x1dcfb1,
-  wk_LEAVE_RET: 0x182f7,
+  wk_POP_RDI_RET: 0x604805f,
+  wk_POP_RSI_RET: 0x7245e5e,
+  wk_POP_RDX_RET: 0x1305ba5a,
+  wk_POP_RCX_RET: 0x1fade59,
+  wk_POP_RAX_RET: 0x1450458,
+  wk_POP_R8_RET: 0x230cbe,
+  wk_POP_R9_RET: 0x9df883,
+  wk_LEAVE_RET: 0x1c2f7c9,
   wk_MOV_QWORD_PTR_RDI_RAX_RET: 0x548b,
   wk_PUSH_RDX_POP_RSP_RET: 0x2abccaa,
   wk_MOV_RDI_RSI_30_CALL: 0x295f948,
@@ -685,47 +684,10 @@ PS4["14.00"] = {
   wk___imp_pthread_create: 0x3cb9c00,
   k_pthread_create: 0x21790,
 
-  k_stubs: {
-    3: 0x2c170,
-    4: 0x2b8d0,
-    5: 0x2b970,
-    6: 0x2d620,
-    20: 0x2cb70,
-    23: 0x2b6f0,
-    24: 0x2d5e0,
-    25: 0x2b4d0,
-    30: 0x2c9d0,
-    54: 0x2cff0,
-    92: 0x2b650,
-    97: 0x2d050,
-    98: 0x2b5f0,
-    104: 0x2d380,
-    105: 0x2b490,
-    106: 0x2d480,
-    118: 0x2b2f0,
-    135: 0x2c280,
-    240: 0x2d4c0,
-    331: 0x2c6b0,
-    432: 0x2b510,
-    466: 0x2cc70,
-    487: 0x2ba80,
-    488: 0x2bd10,
-    538: 0x2b430,
-    539: 0x2b4f0,
-    544: 0x2beb0,
-    545: 0x2ca30,
-    632: 0x2d090,
-    633: 0x2d840,
-    662: 0x2ccb0,
-    663: 0x2c3e0,
-    664: 0x2d740,
-    666: 0x2d540,
-    669: 0x2bdf0,
-  },
   k_scan_stage1: 0x40000,
   k_scan_stage2: 0x60000,
 
-  // 2. Offsets de Kernel específicos do 14.00 que você já tinha mapeado
+  // Offsets de Kernel específicos do 14.00
   k_idt_rsvd: 0x1c1e00,
   k_prison0: 0x0111FA18,
   k_rootvnode: 0x02136E90,
@@ -733,17 +695,7 @@ PS4["14.00"] = {
   k_sysent_661: 0x110a760,
   k_jmp_rsi: 0x4d6d0,
   k_evf_cv: 0x785228,
-  
-  // OIDs e argumentos do kernel
-  k_oid_kern_file: 0x1a2f8a0,
-  k_oid_maxfilesperproc: 0x1a2f950,
-  k_oid_maxprocperuid: 0x1a3ba88,
-  k_oid_maxfiles: 0x1a2f9a8,
-  k_arg1_maxfilesperproc: 0x22cc47c,
-  k_arg1_maxprocperuid: 0x22cc478,
-  k_arg1_maxfiles: 0x22cc474,
 
-  // Binários de patch e payload
   kpatch: "1400.bin",
   payload: "hen.bin",
 };
