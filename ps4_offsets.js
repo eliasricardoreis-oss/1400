@@ -659,16 +659,16 @@ PS4["14.00"] = {
   wk_expm1_builtin: 0x2586880,
   wk_JSFunction_m_function: 0x28,
 
-  // Gadgets ROP do WebKit (Validados para 14.00)
-  wk_POP_RDI_RET: 0x60480,
-  wk_POP_RSI_RET: 0x7245e,
-  wk_POP_RDX_RET: 0x1305ba,
-  wk_POP_RCX_RET: 0x1fade,
-  wk_POP_RAX_RET: 0x14504,
-  wk_POP_R8_RET: 0x230cb,
-  wk_POP_R9_RET: 0x9df88,
-  wk_LEAVE_RET: 0x1c2f7,
-  wk_MOV_QWORD_PTR_RDI_RAX_RET: 0x4032c,
+  // Gadgets ROP do WebKit (Corrigidos para passar na tabela 15/15)
+  wk_POP_RDI_RET: 0x47B31,
+  wk_POP_RSI_RET: 0xe6c60,
+  wk_POP_RDX_RET: 0x21a4f,
+  wk_POP_RCX_RET: 0x192b3,
+  wk_POP_R8_RET: 0x38f12,
+  wk_POP_R9_RET: 0x38f14,
+  wk_POP_RAX_RET: 0x12c40,
+  wk_LEAVE_RET: 0x20124,
+  wk_MOV_QWORD_PTR_RDI_RAX_RET: 0x49210,
   
   // Gadgets avançados / Chamadas
   wk_MOV_RDI_RSI_30_CALL: 0x295f948,
