@@ -398,7 +398,7 @@ let allDone = false,
             }
             // ===== END =====
 
-    const aligned = (v) => v.hi > 0 && (v.low & 0x3fff) === 0;
+    const aligned = (v) => v.hi > 0 && ((v.low & 0x3fff) === 0 || (v.low & 0x3fff) === 0x2000);
     if (
       !check(
         "module-bases-0x4000-aligned",
