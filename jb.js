@@ -406,7 +406,7 @@ let allDone = false,
         "",
       )
     )
-      return;
+      // return;
 
     const G = {};
     const GAD = [
