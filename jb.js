@@ -2034,7 +2034,7 @@ let allDone = false,
 
     const RVA_RSVD = off.k_idt_rsvd;
     const STEPMAG = 0x1000000;
-    const SWEEP = params.get("sweep") ? parseInt(params.get("sweep"), 10) : 128;
+    const SWEEP = 128;
 
     const B = {};
     const JOBS = [
