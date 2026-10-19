@@ -652,12 +652,17 @@ export function offsetsFor(uaString) {
   return { key, off: PS4[key] || null };
 }
 
-// Manual addition: 14.00 inherits from 13.52 for userland testing.
-// Kernel offsets are LIKELY WRONG but our userland notification payload
-// doesn't use them. Set the chain to skip the kpatch stage.
+// Configuração oficial para o firmware 14.00 com offsets mapeados
 PS4["14.00"] = Object.assign({}, PS4["13.52"], {
   alias_of: "13.52",
-  fw_status: "userland-test-only, kernel offsets inherited from 13.52",
-  kpatch: null,          // <-- skip the kernel patch stage
-  payload: "goldhen.bin",
+  fw_status: "state=14.00-custom-kpatch-integrated",
+  
+  // Offsets de Kernel específicos do 14.00 (obtidos do 1400.c)
+  k_prison0: 0x0111FA18,
+  k_rootvnode: 0x02136E90,
+  k_sysent: 0x01102B70,
+  
+  // Apontadores para o patch e o payload personalizado
+  kpatch: "1400.bin",
+  payload: "hen.bin",
 });
