@@ -778,8 +778,8 @@ let allDone = false,
       MAP_FIXED = 0x10,
       MAP_ANON = 0x1000;
     const NODE_SZ = 0x38;
-    const N_LEAK = params.get("n") ? parseInt(params.get("n"), 10) : 262144;
-    const SPRAY = params.get("spray") ? parseInt(params.get("spray"), 10) : 512;
+    const N_LEAK = params.get("n") ? parseInt(params.get("n"), 10) : 131072;
+    const SPRAY = params.get("spray") ? parseInt(params.get("spray"), 10) : 256;
     const SPIN = params.get("spin")
       ? parseInt(params.get("spin"), 10)
       : 40000000;
