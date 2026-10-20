@@ -184,11 +184,13 @@ export const PS4 = {
     k_arg1_maxfilesperproc: 0x22cc47c,
     k_arg1_maxprocperuid: 0x22cc478,
     k_arg1_maxfiles: 0x22cc474
+    
     // Arquivos de Patch e Payload
     kpatch: "1400.bin",
     payload: "hen.bin",
   },
 };
+
 
 export function offsetsFor(uaString) {
   const m = (uaString || "").match(/PlayStation\s+4[\/ ](\d+)\.(\d+)/);
