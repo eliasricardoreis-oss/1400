@@ -183,7 +183,7 @@ export const PS4 = {
     k_oid_maxfiles: 0x1a2f9a8,
     k_arg1_maxfilesperproc: 0x22cc47c,
     k_arg1_maxprocperuid: 0x22cc478,
-    k_arg1_maxfiles: 0x22cc474
+    k_arg1_maxfiles: 0x22cc474,
     
     // Arquivos de Patch e Payload
     kpatch: "1400.bin",
