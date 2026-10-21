@@ -779,8 +779,8 @@ let allDone = false,
       MAP_FIXED = 0x10,
       MAP_ANON = 0x1000;
     const NODE_SZ = 0x38;
-    const N_LEAK = 65536; // Reduzido pela metade
-    const SPRAY =  64;  // Reduzido de 256 para 64
+    const N_LEAK = 16384; // Reduzido pela metade
+    const SPRAY =  16;  // Reduzido de 256 para 64
     const SPIN = params.get("spin")
       ? parseInt(params.get("spin"), 10)
       : 40000000;
