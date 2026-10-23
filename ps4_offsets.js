@@ -194,7 +194,7 @@ export const PS4 = {
 
     // Arquivos de Patch e Payload
     kpatch: "1400.bin",
-    payload: "hen.bin",
+    payload: "payload2.bin",
   },
 };
 
