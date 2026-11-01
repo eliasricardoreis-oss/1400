@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Elias Jailbreak test</title>
+<style>
+  html, body { margin:0; padding:0; background:#0b0d10; color:#c8ced8;
+               font:13px/1.4 monospace; }
+  #diag { position:fixed; top:0; left:0; right:0; padding:8px;
+          background:#080; color:#fff; z-index:99999; text-align:center; }
+  #diag.err { background:#a00; }
+  #wrap { padding:60px 12px 80px 12px; }
+  #out { white-space:pre-wrap; font-size:11px; color:#0f0;
+         max-height:65vh; overflow:auto; }
+  #paste { position:fixed; bottom:0; left:0; right:0; padding:8px;
+           background:#111; color:#8f8; text-align:center; font-size:12px;
+           border-top:1px solid #333; z-index:9999; }
+  #paste a { color:#7fd; }
+  #brand { padding:8px; background:#0e1116; border-bottom:1px solid #1e2732;
+           position:fixed; top:30px; left:0; right:0; text-align:center;
+           font-weight:700; letter-spacing:0.14em; color:#e6ebf2; z-index:9998; }
+</style>
+</head>
+<body>
+<div id="diag">HTML LOADED</div>
+<div id="brand">Elias Jailbreak (For to you play rpcs3 on ps4 on 14.00)</div>
+<div id="wrap"><div id="out"></div></div>
+<div id="paste">pastefy: idle</div>
+
+<script>
+window.__lines = [];
+window.__t0 = Date.now();
+window.__lastPasteAttempt = 0;
+window.__pasteInFlight = false;
+window.__pasteURL = null;
+
+var PASTEFY_KEY = "rO80IGK4jjFccAO04fIf9L9kpkNlCVheclpiAdV6u7a95Q7fqqsPxM2HA8oG";
+
+window.diag = function (msg, isErr) {
+    var t = ((Date.now() - window.__t0) / 1000).toFixed(2);
+    var line = "[" + t + "s] " + msg;
+    var el = document.getElementById('diag');
+    if (el) { el.textContent = msg; el.className = isErr ? 'err' : ''; }
+    window.__lines.push(line);
+    var out = document.getElementById('out');
+    if (out) { out.textContent = window.__lines.join('\n'); out.scrollTop = out.scrollHeight; }
+    console.log(line);
+};
+
+window.__uploadNow = function () {
+    if (window.__pasteInFlight) return;
+    window.__pasteInFlight = true;
+    window.__lastPasteAttempt = Date.now();
+
+    var pasteEl = document.getElementById('paste');
+    var body = window.__lines.join('\n') || "(no log yet)";
+
+    var payload = JSON.stringify({
+        title: "ps4-14.00-" + Date.now(),
+        content: body,
+        type: "PASTE",
+        visibility: "UNLISTED"
+    });
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://pastefy.app/api/v2/paste", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.timeout = 4000;
+
+    xhr.onload = function () {
+        window.__pasteInFlight = false;
+        if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+                var r = JSON.parse(xhr.responseText);
+                var pid = (r.paste && r.paste.id) || r.id || "";
+                window.__pasteURL = "https://pastefy.app/" + pid;
+                if (pasteEl) pasteEl.innerHTML = 'pastefy: <a href="' + window.__pasteURL + '" target="_blank">' + window.__pasteURL + '</a>';
+            } catch (e) {
+                if (pasteEl) pasteEl.textContent = "pastefy: parse err";
+            }
+        } else {
+            if (pasteEl) pasteEl.textContent = "pastefy: HTTP " + xhr.status;
+        }
+    };
+    xhr.onerror = function () {
+        window.__pasteInFlight = false;
+        if (pasteEl) pasteEl.textContent = "pastefy: network err (CORS?)";
+    };
+    xhr.ontimeout = function () {
+        window.__pasteInFlight = false;
+    };
+    xhr.send(payload);
+};
+
+window.addEventListener('error', function (e) {
+    window.diag('JS ERROR: ' + e.message + ' @ ' + (e.filename || '').split('/').pop() + ':' + e.lineno, true);
+    window.__uploadNow();
+});
+window.addEventListener('unhandledrejection', function (e) {
+    var r = e.reason;
+    window.diag('PROMISE REJECT: ' + (r && r.message ? r.message : r), true);
+    window.__uploadNow();
+});
+
+// Aggressive: every 500ms upload regardless of log changes
+setInterval(function () {
+    window.__uploadNow();
+}, 500);
+
+// Also, first upload as soon as we have any log
+setTimeout(function () { window.__uploadNow(); }, 200);
+</script>
+
+<script type="module">
+(async function () {
+    try {
+        window.diag("importing jb.js...");
+        await import("./jb.js?v=25");
+        window.diag("jb.js module evaluated OK");
+    } catch (e) {
+        window.diag("MODULE ERROR: " + (e && e.message ? e.message : String(e)) + (e && e.stack ? " | " + e.stack.split("\\n").slice(0,3).join(" | ") : ""), true);
+        window.__uploadNow();
+    }
+})();
+</script>
+</body>
+</html>
