@@ -113,43 +113,36 @@ export const PS4 = {
   "14.00": {
     fw_status: "state=14.00-full-kernel-offsets-integrated",
 
-    // Endereços Base e Funções do WebKit
+    // Endereços Base e Funções do WebKit (libSceNKWebKit.sprx)
     wk_expm1_builtin: 0x2586880,
     wk_JSFunction_m_function: 0x28,
 
-    wk_RET: 0x4032,
-    wk_LEAVE_RET: 0x1c2f7,
-    wk_POP_RAX_RET: 0x14504,
-    wk_POP_RBX_RET: 0xb9e8,
-    wk_POP_RCX_RET: 0x1fade,
-    wk_POP_RDX_RET: 0x1305ba,
-    wk_POP_RSI_RET: 0x7245e,
-    wk_POP_RDI_RET: 0x60480,
-    wk_POP_RBP_RET: 0x40b6,
-    wk_POP_RSP_RET: 0x73017,
-    wk_POP_R8_RET: 0x230cbe1,
-    wk_POP_R9_RET: 0x9df883,
-    wk_POP_R12_RET: 0x242ab15,
-    wk_POP_R14_RET: 0xa9e91,
-    wk_POP_R15_RET: 0x6047f,
-    wk_POP_R13_POP_R14_POP_R15_RET: 0x6047b,
+    wk_RET          : 0x4032,       // c3
+    wk_LEAVE_RET    : 0x1c2f7,      // c9 c3
+    wk_POP_RAX_RET  : 0x14504,      // 58 c3
+    wk_POP_RBX_RET  : 0xb9e8,       // 5b c3
+    wk_POP_RCX_RET  : 0x1fade,      // 59 c3
+    wk_POP_RDI_RET  : 0x60480,      // 5f c3
+    wk_POP_RDX_RET  : 0x1305ba,     // 5a c3
+    wk_POP_RSI_RET  : 0x7245e,      // 5e c3
+    wk_POP_RBP_RET  : 0x40b6,       // 5d c3
+    wk_POP_RSP_RET  : 0x73017,      // 5c c3 (stack pivot!)
 
-    wk_MOV_RAX_RDI_RET: 0x23320,
-    wk_MOV_RDX_RAX_RET: 0x1ceba9,
-    wk_XCHG_RAX_RSP_RET: 0x3f755a8,
-    wk_MOV_QWORD_RDI_RAX_RET: 0x948b,
-    wk_MOV_RAX_QWORD_RAX_RET: 0x14021,
-    wk_MOV_RAX_QWORD_RDI_RET: 0xe2ea0,
-    wk_ADD_RAX_RCX_RET: 0x84f67,
-    wk_SUB_RAX_RCX_RET: 0x98736c,
-    wk_XOR_RAX_RAX_RET: 0x23d14f6,
-    wk_INC_RAX_RET: 0xc5e51c,
-    wk_JMP_RAX: 0x4082,
-    wk_CALL_RAX: 0x4041,
-    wk_JMP_RCX: 0x12a2a,
+    // ── Extended registers (verified) ──
+    wk_POP_R8_RET   : 0x230cbe1,    // 41 58 c3
+    wk_POP_R9_RET   : 0x9df883,     // 41 59 c3 (pop r9; ret)
+    wk_POP_R12_RET  : 0x242ab15,    // 41 5c c3
 
-    // Compatibilidade com chaves esperadas pelo validador
-    wk_MOV_QWORD_PTR_RDI_RAX_RET: 0x948b,
+    // ── Extended registers (partial — verify before use) ──
+    wk_POP_R10_RET  : 0x2dc33b5,    // 41 5a 41 ... (not followed by clean ret)
+    wk_POP_R11_RET  : 0x19c9ba,     // 41 5b 41 ... (not followed by clean ret)
+
+    // ── Multi-pop gadgets ──
+    wk_POP_R13_RET  : 0x6047b,      // 41 5d 41 5e 41 5f c3 (pops r13, r14, r15)
+    wk_POP_R14_RET  : 0xa9e91,      // 41 5e c3
+    wk_POP_R15_RET  : 0x6047f,      // 41 5f c3
+
+    // Gadgets avançados / Chamadas
     wk_MOV_RDI_RSI_30_CALL: 0x295f948,
     wk_POP_RAX_MOV_RAX_JMP_18: 0x1d989e3,
     wk_PUSH_RBP_MOV_RBP_RSP_10: 0x25bae0,
@@ -169,18 +162,28 @@ export const PS4 = {
     k_scan_stage1: 0x40000,
     k_scan_stage2: 0x60000,
 
-    // --- KERNEL OFFSETS (Adicionados do 1400.c) ---
+    // --- KERNEL DATA & STRUCT OFFSETS (FW 14.00 - Validados via 1400.c) ---
     k_idt_rsvd: 0x1c1d60,
-    k_prison0: 0x111fa18,
-    k_rootvnode: 0x2136e90,
-    k_allproc: 0x1b28538,
-    k_sysent: 0x1102b70,
+    k_prison0: 0x0111FA18,      //[cite: 6, 7]
+    k_rootvnode: 0x02136E90,    //[cite: 6, 7]
+    k_sysent: 0x01102B70,       //[cite: 6, 7]
     k_sysent_661: 0x110a760,
-    k_jmp_rsi: 0x47b31,
+    k_jmp_rsi: 0x47b31,         //[cite: 7]
     k_kl_lock: 0xe6c60,
     k_evf_cv: 0x785228,
-    k_memcpy: 0x2bd850,
+    k_allproc: 0x01B28538,      //[cite: 6, 7]
+    k_m_temp: 0x01520D00,       //[cite: 6, 7]
+    k_xfast_syscall: 0x000001C0,//[cite: 6, 7]
 
+    // Funções do Kernel mapeadas para o patch (Validadas via 1400.c)
+    k_memcpy: 0x002BD850,       //[cite: 6, 7]
+    k_memcmp: 0x00394D80,       //[cite: 6, 7]
+    k_memset: 0x001FA500,       //[cite: 6, 7]
+    k_malloc: 0x00009520,       //[cite: 6, 7]
+    k_free: 0x000096E0,         //[cite: 6, 7]
+    k_proc_rwmem: 0x00366A10,   //[cite: 6, 7]
+
+    // OIDs e Globais do Kernel para manipulação R/W
     k_oid_kern_file: 0x1a2f8a0,
     k_oid_maxfilesperproc: 0x1a2f950,
     k_oid_maxprocperuid: 0x1a3ba88,
@@ -189,6 +192,7 @@ export const PS4 = {
     k_arg1_maxprocperuid: 0x22cc478,
     k_arg1_maxfiles: 0x22cc474,
 
+    // Arquivos de Patch e Payload
     kpatch: "kpayload.bin",
     payload: "payload2.bin",
   },
