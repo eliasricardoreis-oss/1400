@@ -1,0 +1,20 @@
+PS4 14.00 HOST — PACOTE LIMPO (SEM TELEMETRIA)
+
+Este pacote é uma cópia do arquivo fornecido, com:
+- removida a rotina que enviava os registos para Pastefy a cada 500 ms;
+- removida a chave API Pastefy;
+- diagnóstico mantido apenas localmente no ecrã;
+- corrigida a referência do patch 14.00 em ps4_offsets.js para patches/1400.bin,
+  que existe no arquivo e corresponde ao 1400.bin fornecido.
+
+IMPORTANTE:
+- Isto NÃO é uma validação independente do exploit, dos offsets ou do payload.
+- O código de exploração original foi mantido; não foi possível confirmar execução real em hardware.
+- O ficheiro hen.bin e installer.bin enviados não são referenciados pela configuração ativa de 14.00.
+  A configuração aponta para patches/1400.bin e payload2.bin.
+- Não execute se não aceitar o risco de bloqueio, reinício ou instabilidade da consola.
+- Sirva a pasta por HTTP/HTTPS (por exemplo, alojamento web/local na rede). Não abra como file://:
+  os módulos ES e fetch() relativos normalmente precisam de uma origem HTTP(S).
+- Para começar, abra index.html. O host deteta o firmware pelo User-Agent e encaminha para jb.html.
+
+Não inclui instruções para contornar proteções de serviços online nem para pirataria.
